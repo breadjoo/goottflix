@@ -126,6 +126,7 @@ public class MovieApiController {
 
         if(userId!=null){
             if(review1==null){
+                review1=new Review();
                 review1.setUserId(userId);
                 review1.setMovieId(movieId);
                 review1.setRating(rating);
