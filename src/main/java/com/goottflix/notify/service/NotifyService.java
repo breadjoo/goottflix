@@ -52,7 +52,7 @@ public class NotifyService {
     public void addFriendUpdate(Long userId) {
         NotifyEntity notify = new NotifyEntity();
         notify.setContent("새로운 친구가 추가되었습니다");
-        notify.setUrl("/mypage"); // 프론트에서 url 설정하는거에 따라 변동
+        notify.setUrl("/myFriendList"); // 프론트에서 url 설정하는거에 따라 변동
         notify.setIsRead(false);
         notify.setNotifyType(NotifyEntity.NotifyType.friendadd);
         notify.setUserId(userId);

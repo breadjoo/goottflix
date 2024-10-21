@@ -28,8 +28,8 @@ public class ChatRoomService {
         return chatRoom;
     }
 
-    public int deleteChatRoom(Long id) {
-        return chatRoomMapper.deleteChatRoom(id);
+    public int deleteChatRoom(Long roomId) {
+        return chatRoomMapper.deleteChatRoom(roomId);
     }
 
     public String getChatRoomNameById(Long id) {

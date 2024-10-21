@@ -15,7 +15,7 @@
     </insert>
 
     <delete id="deleteChatRoom" parameterType="Long">
-        DELETE FROM chat_room WHERE id = #{id}
+        DELETE FROM chat_room WHERE id = #{roomId}
     </delete>
 
     <select id="getChatRoomNameById" parameterType="Long" resultType="String">

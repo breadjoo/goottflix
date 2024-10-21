@@ -10,6 +10,10 @@
         select * from review where movie_id=#{movieId}
     </select>
 
+    <select id="findByUserIdAndMovieId" parameterType="map" resultType="Review">
+        select * from review where movie_id=#{movieId} and user_id=#{userId}
+    </select>
+
     <select id="findById" resultType="Review">
         select * from review where id=#{id}
     </select>
@@ -38,7 +42,7 @@
         delete from likes where review_id=#{reviewId} and user_id=#{userId}
     </delete>
 
-    <update id="declaration">
+    <update id="declaration" parameterType="map">
         update review set spoiler=#{spoiler} where id=#{id}
     </update>
 

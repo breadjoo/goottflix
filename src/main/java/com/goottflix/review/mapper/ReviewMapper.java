@@ -15,9 +15,11 @@ public interface ReviewMapper {
 
     Review findById(Long id);
 
+    Review findByUserIdAndMovieId(Map<String, Object> params);
+
     void save(Review review);
 
-    void update(Long id, Review review);
+    void update(Review review);
 
     void delete(Long id);
 
@@ -30,6 +32,8 @@ public interface ReviewMapper {
     void likesDelete(Map<String, Object> params);
 
     List<Review> findBySpoiler();
+
+    void declaration(Map<String, Object> params);
 
     void initializeRank();
     int countTotalUsers();

@@ -76,7 +76,7 @@ public class MovieController {
     @PostMapping("/movie/review")
     public String reviewPost(@RequestParam("movieId") Long movieId,
                              @RequestParam("userId") Long userId,
-                             @RequestParam("rating") Long rating,
+                             @RequestParam("rating") int rating,
                              @RequestParam(name = "review",required = false) String review){
 
         Review review1 = new Review();

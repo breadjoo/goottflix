@@ -6,7 +6,8 @@ import com.goottflix.user.jwt.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,9 +34,23 @@ public class ChatRoomController {
         return chatRoomService.createChatRoom(chatRoom);
     }
 
-    @DeleteMapping("/{id}")
-    public int deleteChatRoom(@PathVariable Long id) {
-        return chatRoomService.deleteChatRoom(id);
+
+    @GetMapping("/getRole")
+    public String getUserRole(Authentication authentication) {
+        if (authentication == null) {
+            return "ROLE_USER";  // 인증되지 않은 사용자는 기본적으로 USER로 취급
+        }
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(role -> role.equals("ROLE_ADMIN"))
+                .findAny()
+                .orElse("ROLE_USER");  // ROLE_ADMIN 권한이 없으면 USER로 반환
+    }
+
+    @DeleteMapping("/{roomId}")
+    public ResponseEntity<Void> deleteChatRoom(@PathVariable Long roomId) {
+        chatRoomService.deleteChatRoom(roomId);
+        return ResponseEntity.noContent().build();  // 성공 시 204 No Content 반환
     }
 
 

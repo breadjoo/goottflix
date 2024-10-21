@@ -41,7 +41,7 @@ CREATE TABLE  notifys  (
                            movie_id 	int	NULL,
                            content 	varchar(255)	NULL,
                            url 	varchar(255)	NULL,
-                           is_read 	boolean	default false NULL,
+                           is_read 	boolean	default false NOT NULL ,
                            notify_type 	enum('movieUpdate','friendadd')	NULL
 );
 DROP TABLE IF EXISTS cards;
@@ -117,6 +117,14 @@ type VARCHAR(255),
 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
 FOREIGN KEY (room_id) REFERENCES chat_room(id)
 );
+
+ALTER TABLE chat_message
+    DROP FOREIGN KEY chat_message_ibfk_1;
+
+ALTER TABLE chat_message
+    ADD CONSTRAINT chat_message_ibfk_1
+        FOREIGN KEY (room_id) REFERENCES chat_room(id)
+            ON DELETE CASCADE;
 
 DROP TABLE IF EXISTS likes;
 CREATE TABLE likes (

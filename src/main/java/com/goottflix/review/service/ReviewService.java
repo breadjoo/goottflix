@@ -20,11 +20,15 @@ public class ReviewService {
         return reviewMapper.findByMovieId(movieId);
     }
 
+    public Review getReviewByUserIdAndMovieId(Map<String, Object> params){
+        return reviewMapper.findByUserIdAndMovieId(params);
+    }
+
     public void save(Review review){
         if(review.getId()==null){
             reviewMapper.save(review);
         }else{
-            reviewMapper.update(review.getId(),review);
+            reviewMapper.update(review);
         }
     }
 
@@ -56,7 +60,7 @@ public class ReviewService {
             params.put("userId", userId);
             reviewMapper.likesSave(params);
         }
-        reviewMapper.update(reviewId,review);
+        reviewMapper.update(review);
     }
 
     public boolean isLiked(Long reviewId, Long userId){
@@ -73,8 +77,10 @@ public class ReviewService {
 
     public void declaration(Long reviewId){
         Review review = reviewMapper.findById(reviewId);
-        review.setSpoiler(review.getSpoiler()+1);
-        reviewMapper.update(reviewId,review);
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", reviewId);
+        params.put("spoiler",(review.getSpoiler()+1));
+        reviewMapper.declaration(params);
     }
 
     public List<Review> getReviewBySpoiler(){

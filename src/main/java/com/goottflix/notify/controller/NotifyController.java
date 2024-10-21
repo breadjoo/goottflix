@@ -38,7 +38,7 @@ public class NotifyController {
 
     // 친구 추가 업데이트
     @PostMapping("/friendUpdate")
-    public ResponseEntity<?> addFriendUpdate(@RequestParam Long userId) {
+    public ResponseEntity<?> addFriendUpdate(@RequestParam("userId") Long userId) {
         try {
             notifyService.addFriendUpdate(userId);
             return ResponseEntity.ok("친구 추가 완료");
@@ -58,7 +58,7 @@ public class NotifyController {
 
     // 알림 읽음 확인
     @PutMapping("/read")
-    public ResponseEntity<?> readNotify(@RequestParam Long userId, @RequestParam Long notifyId) {
+    public ResponseEntity<?> readNotify(@RequestParam("userId") Long userId, @RequestParam("notifyId") Long notifyId) {
         try {
             // 서비스 계층에서 알림 읽음 처리
             notifyService.notifyRead(userId, notifyId);
@@ -79,7 +79,7 @@ public class NotifyController {
 
     // 알림 삭제
     @DeleteMapping("/deleteNotify")
-    public ResponseEntity<?> deleteNotify(@RequestParam Long notifyId) {
+    public ResponseEntity<?> deleteNotify(@RequestParam("notifyId") Long notifyId) {
         try {
             notifyService.deleteNotify(notifyId);
             return ResponseEntity.ok("알림 삭제 성공");
