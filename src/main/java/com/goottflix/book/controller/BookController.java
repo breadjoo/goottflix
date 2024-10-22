@@ -38,8 +38,6 @@ public class BookController {
     public Flux<String> streamNfcData() {
         return sink.asFlux().delayElements(Duration.ofMillis(100));
     }
-
-    // NFC 데이터를 HTTP POST로 수신
     @PostMapping("/nfc-data")
     public ResponseEntity<String> receiveNfcData(@RequestBody NfcRequest nfcRequest) {
         String uid = nfcRequest.getUid();

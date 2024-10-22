@@ -51,6 +51,7 @@
     </select>
 
 <!--    상위몇프로 ?~ -->
+
     <update id="initializeRank">
         SET @rank := 0;
     </update>

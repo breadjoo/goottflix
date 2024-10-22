@@ -49,19 +49,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        // security에서  cors 설정하기
         http
                 .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration configuration = new CorsConfiguration();
-
                         configuration.setAllowedOrigins(Collections.singletonList(reactEndpointUrl));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
                         configuration.setMaxAge(3600L);
-
                         configuration.setExposedHeaders(List.of("Set-Cookie", "Authorization"));
                         return configuration;
                     }
@@ -85,13 +82,10 @@ public class SecurityConfig {
         //경로별 인가작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/book/**").permitAll() // 아두이노 요청
-                        .requestMatchers("/auth/**").permitAll() // 회원가입 시 메일인증요청
+                        .requestMatchers("/","/book/**","/auth/**").permitAll() // 메인페이지,아두이노,이메일인증 요청
                         .requestMatchers("/api/login","/api/join","/api/list/page","/files/**").permitAll() // 로그인페이지,메인페이지(영화목록), 파일업로드
 //                        .requestMatchers("/api/movie/write", "/api/movie/modify", "/api/movie/delete/**").hasRole("ADMIN")  // 'ROLE_ADMIN' 권한을 가진 사용자만 접근 가능
-                        .requestMatchers("/api/login","/","/api/**","/files/**").permitAll()
-                        .requestMatchers("/**").permitAll()
-                        .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers("/api/**","/files/**", "/**","/uploads/**").permitAll()
                         .anyRequest().authenticated());
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
