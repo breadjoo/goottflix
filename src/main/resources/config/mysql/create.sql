@@ -133,3 +133,16 @@ CREATE TABLE likes (
     review_id INT NOT NULL
 );
 
+DROP TABLE IF EXISTS notice;
+CREATE TABLE notice
+(
+    id       INT AUTO_INCREMENT PRIMARY KEY,
+    title    VARCHAR(255) NOT NULL,
+    content  VARCHAR(255) NOT NULL,
+    image    VARCHAR(255),
+    writer   INT          NOT NULL,
+    password VARCHAR(20)
+);
+
+)
+
