@@ -36,15 +36,18 @@ public class NoticeService {
         }
     }
     // 공지사항 작성
-    public void save(Notice notice, MultipartFile file) throws IOException {
+    public void save(Long writer, Notice notice, MultipartFile file) throws IOException {
 
-        if(!file.isEmpty()) {
+        if(file != null && !file.isEmpty()) {
             notice.setImage(handleFileUpload(file));
         }
         if (notice.getId()==null) {
+            notice.setWriter(writer);
             noticeMapper.save(notice);
         } else {
-            deleteExistFile(notice);
+            if (file != null && file.isEmpty()) {
+                deleteExistFile(notice);
+            }
             noticeMapper.update(notice);
         }
     }

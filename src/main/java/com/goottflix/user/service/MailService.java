@@ -26,6 +26,7 @@ public class MailService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
         System.out.println("여기는 MailService입니다. email = " + email);
 
+        helper.setFrom("yoohwanjoo@nate.com");
         helper.setTo(email);
         helper.setSubject("구트플릭스 회원가입을 위한 인증번호입니다.");
 
