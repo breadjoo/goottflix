@@ -65,7 +65,7 @@ public class NoticeService {
 
     //공지사항 불러오기
     public List<Notice> getAllNotices() {
-        return noticeMapper.findAll();
+        return noticeMapper.findAllSort();
     }
 
 

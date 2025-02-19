@@ -6,8 +6,8 @@
         select * from notice where id = #{id}
     </select>
 
-    <select id="findAll" resultType="Notice">
-        select * from notice
+    <select id="findAllSort" resultType="Notice">
+        select * from notice order by created_at desc;
     </select>
 
     <insert id="save">

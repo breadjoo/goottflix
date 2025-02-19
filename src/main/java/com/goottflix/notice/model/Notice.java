@@ -2,6 +2,8 @@ package com.goottflix.notice.model;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class Notice {
 
@@ -11,4 +13,5 @@ public class Notice {
     private String image;
     private Long writer;
     private String password;
+    private LocalDateTime createdAt;
 }

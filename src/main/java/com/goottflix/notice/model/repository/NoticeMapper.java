@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface NoticeMapper {
 
-    //전체 공지사항 리스트
-    List<Notice> findAll();
+    //전체 공지사항 리스트 Sort
+    List<Notice> findAllSort();
 
     //공지사항 작성
     void save(Notice notice);
