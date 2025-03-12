@@ -37,6 +37,11 @@ jobs:
       - name: Check Secrets
         run: |
           echo "DOCKER_USERNAME is set as: ${{ secrets.DOCKER_USERNAME }}"
+
+      - name: Create .env file
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+          chmod 600 .env
         
       - name: Login to DockerHub
         uses: docker/login-action@v3
