@@ -35,11 +35,9 @@ public class NoticeController {
                                           @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
 
         System.out.println("공지사항 작성");
-        System.out.println("notice = " + notice);
         System.out.println("notice.getTitle() = " + notice.getTitle());
         Long writer = jwtUtil.getUserID(token);
         noticeService.save(writer, notice, file);
         return ResponseEntity.ok().build();
     }
-
 }
