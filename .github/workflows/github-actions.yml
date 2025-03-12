@@ -19,12 +19,6 @@ jobs:
           java-version: '17' # 스프링부트 애플리케이션 자바 버전에 맞게
           distribution: 'zulu'
 
-      - name: make application.yml
-        run: |
-          cd ./src/main/resources
-          touch ./application.yml
-          echo "${{ secrets.APPLICATION }}" > ./application.yml
-
       - name: Gradle Caching
         uses: actions/cache@v3
         with:
@@ -40,6 +34,10 @@ jobs:
           chmod +x ./gradlew
           ./gradlew build -x test
 
+      - name: Check Secrets
+        run: |
+          echo "DOCKER_USERNAME is set as: ${{ secrets.DOCKER_USERNAME }}"
+        
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
