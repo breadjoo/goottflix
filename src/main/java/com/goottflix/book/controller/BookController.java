@@ -42,7 +42,7 @@ public class BookController {
     public ResponseEntity<String> receiveNfcData(@RequestBody NfcRequest nfcRequest) {
         String uid = nfcRequest.getUid();
         System.out.println("Received NFC UID: " + uid);
-        System.out.println("250312 배포용 푸쉬");
+        System.out.println("250312 배포용 푸쉬2");
         sink.tryEmitNext(uid);
         nfcService.sendNfcData(uid);
         return ResponseEntity.ok("NFC data processed successfully.");
