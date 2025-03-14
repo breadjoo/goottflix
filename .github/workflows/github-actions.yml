@@ -69,13 +69,23 @@ jobs:
           key: ${{ secrets.KEY }}
           envs: GITHUB_SHA, ENV_FILE
           script: |
+            echo "✅ 환경 변수 저장 (.env)"
             echo "${{ secrets.ENV_FILE }}" > /home/ubuntu/.env
-            sudo docker ps -qa | xargs -r sudo docker rm -f
-            sudo docker pull ${{ secrets.DOCKER_REPO }}:latest
-            sudo docker run -d -p 8080:8080 \
-            -e SPRING_PROFILES_ACTIVE=prod \
-            --env-file /home/ubuntu/.env \
-            ${{ secrets.DOCKER_REPO }}:latest
+            
+            echo "✅ 기존 컨테이너 중지 및 삭제"
+            sudo docker ps -q --filter "name=backend" | grep -q . && sudo docker stop backend && sudo docker rm backend || echo "No existing backend container."
+            sudo docker ps -q --filter "name=frontend" | grep -q . && sudo docker stop frontend && sudo docker rm frontend || echo "No existing frontend container."
+
+            echo "✅ 사용하지 않는 컨테이너 및 이미지 정리"
+            sudo docker container prune -f
             sudo docker image prune -f
+            
+            echo "✅ 최신 Docker 이미지 가져오기"
+            sudo docker pull ${{ secrets.DOCKER_REPO_BACKEND }}:latest
+            sudo docker pull ${{ secrets.DOCKER_REPO_FRONTEND }}:latest
+            
+            echo "✅ 새로운 컨테이너 실행"
+            sudo docker compose up -d --build
+            
+            echo "✅ 현재 실행 중인 컨테이너 목록 확인"
             sudo docker ps -a
-            sudo docker compose up -d
