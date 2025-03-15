@@ -76,8 +76,8 @@ CREATE TABLE  subscribe  (
                              subscribe_end 	timestamp	NULL
 );
 
-DROP TABLE IF EXISTS ApiMovie;
-CREATE TABLE ApiMovie (
+DROP TABLE IF EXISTS apimovie;
+CREATE TABLE apimovie (
      id int auto_increment primary key	NOT NULL,
     movieName varchar(255),
     director varchar(50),
@@ -92,8 +92,8 @@ CREATE TABLE ApiMovie (
 
 );
 
-DROP TABLE IF EXISTS Friends;
-CREATE TABLE Friends(
+DROP TABLE IF EXISTS friends;
+CREATE TABLE friends(
     id int auto_increment primary key NOT NULL,
     user_id int,
     friend_id int,
@@ -144,5 +144,4 @@ CREATE TABLE notice
     password VARCHAR(20)
 );
 
-)
 
