@@ -1,26 +1,14 @@
-# 빌드 스테이지 (멀티스테이지 빌드)
-FROM gradle:8.5-jdk17-alpine as build
+# Stage 1 - build jar
+FROM eclipse-temurin:17-jdk-jammy as builder
 
 WORKDIR /app
+COPY . .
+RUN ./gradlew clean build -x test
 
-# 소스 복사
-COPY --chown=gradle:gradle . .
-
-# 빌드 실행
-RUN gradle clean build -x test
-
-# -------------------------------
-
-# 실제 실행 이미지
+# Stage 2 - runtime
 FROM eclipse-temurin:17-jdk-jammy
-
 WORKDIR /app
+COPY --from=builder /app/build/libs/*.jar ./app.jar
 
-# 빌드된 app.jar 복사
-COPY --from=build /app/build/libs/*.jar ./app.jar
-
-# 포트 오픈
 EXPOSE 8080
-
-# 애플리케이션 실행
 ENTRYPOINT ["java", "-jar", "-Duser.timezone=Asia/Seoul", "app.jar"]

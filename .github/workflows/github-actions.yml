@@ -6,22 +6,21 @@ on:
 
 jobs:
   deploy:
-    name: Deploy Spring Backend
+    name: Deploy Spring Boot
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Cache Gradle
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+      - name: Check Secrets
+        run: |
+          echo "DOCKER_USERNAME is set as: ${{ secrets.DOCKER_USERNAME }}"
+
+      - name: Create .env file
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+          chmod 600 .env
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -29,7 +28,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Docker build & push (multi-stage)
+      - name: Docker Build & Push (multi-stage)
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -39,7 +38,7 @@ jobs:
           tags: ${{ secrets.DOCKER_REPO }}:latest
           no-cache: true
 
-      - name: Deploy to EC2 via SSH
+      - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -47,23 +46,22 @@ jobs:
           key: ${{ secrets.KEY }}
           envs: GITHUB_SHA, ENV_FILE
           script: |
-            echo "✅ .env 파일 세팅"
+            echo "✅ .env 파일 저장"
             echo "${{ secrets.ENV_FILE }}" > /home/ubuntu/.env
 
-            echo "✅ 기존 backend 컨테이너 종료 및 제거"
+            echo "✅ 기존 컨테이너 중지 및 삭제"
             sudo docker ps -q --filter "name=backend" | grep -q . && sudo docker stop backend && sudo docker rm backend || echo "No existing backend container."
 
-            echo "✅ Docker 캐시 이미지 정리"
+            echo "✅ Docker 이미지 및 컨테이너 정리"
             sudo docker container prune -f
             sudo docker image prune -f
-            sudo docker image rm -f ${{ secrets.DOCKER_REPO_BACKEND }}:latest || echo "백엔드 이미지가 이미 삭제됨"
+            sudo docker image rm -f ${{ secrets.DOCKER_REPO }}:latest || echo "backend 이미지 없음"
 
-            echo "✅ 최신 backend, frontend 이미지 pull"
-            sudo docker pull ${{ secrets.DOCKER_REPO_BACKEND }}:latest
-            sudo docker pull ${{ secrets.DOCKER_REPO_FRONTEND }}:latest
+            echo "✅ 최신 Docker 이미지 pull"
+            sudo docker pull ${{ secrets.DOCKER_REPO }}:latest
 
-            echo "✅ 컨테이너 재배포"
+            echo "✅ docker compose up"
             sudo docker compose up -d --build
 
-            echo "✅ 배포 후 컨테이너 상태 확인"
+            echo "✅ docker ps 확인"
             sudo docker ps -a
