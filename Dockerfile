@@ -1,12 +1,25 @@
-# 베이스 이미지 설정
-FROM eclipse-temurin:17-jdk-jammy as build
+# 빌드 스테이지 (멀티스테이지 빌드)
+FROM gradle:8.5-jdk17-alpine as build
 
 WORKDIR /app
 
-# 빌드된 JAR 파일만 복사 (CI/CD에서 빌드 후 복사한다고 가정)
-COPY build/libs/*.jar ./app.jar
+# 소스 복사
+COPY --chown=gradle:gradle . .
 
-# 컨테이너에서 8080 포트 오픈
+# 빌드 실행
+RUN gradle clean build -x test
+
+# -------------------------------
+
+# 실제 실행 이미지
+FROM eclipse-temurin:17-jdk-jammy
+
+WORKDIR /app
+
+# 빌드된 app.jar 복사
+COPY --from=build /app/build/libs/*.jar ./app.jar
+
+# 포트 오픈
 EXPOSE 8080
 
 # 애플리케이션 실행
