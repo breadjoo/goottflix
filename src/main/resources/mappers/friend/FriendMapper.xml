@@ -32,7 +32,7 @@
 
     <select id="existsByFriendId" resultType="boolean" parameterType="Long">
         SELECT COUNT(*) > 0
-        FROM user
+        FROM friends
         WHERE user_id = #{userId} ANd friend_id = #{friendId}
     </select>
 
