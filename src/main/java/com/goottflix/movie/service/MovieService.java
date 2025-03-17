@@ -6,14 +6,11 @@ import com.goottflix.movie.model.Movie;
 import com.goottflix.review.mapper.ReviewMapper;
 import com.goottflix.review.model.Review;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +20,6 @@ public class MovieService {
     private final ReviewMapper reviewMapper;
     private final FileService fileService;
 
-    @Value("${file.upload-dir:/uploads}")
-    private String uploadDir;
 
     public void save(Movie movie, MultipartFile file) throws IOException {
 
@@ -59,21 +54,6 @@ public class MovieService {
         movieMapper.update(movie1);
     }
 
-//    private String handleFileUpload(MultipartFile file) throws IOException {
-//        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
-//        UUID uuid = UUID.randomUUID();
-//        String fileName = uuid + "_" + file.getOriginalFilename();
-//        File saveFile = new File(projectPath, fileName);
-//        file.transferTo(saveFile);
-//        return "/files/"+fileName;
-//    }
-
-//    public void deleteExistingFile(Movie movie) {
-//        File oriFile = new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static" + movie.getPosterUrl());
-//        if (oriFile.exists()) {
-//            oriFile.delete();
-//        }
-//    }
 
     public List<Movie> getAllMovies() {
         return movieMapper.findAll();
