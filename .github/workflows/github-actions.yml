@@ -33,7 +33,7 @@ jobs:
       - name: Build with Gradle
         run: |
           chmod +x ./gradlew
-          ./gradlew build -x test
+          ./gradlew clean build -x test
 
       - name: Check Secrets
         run: |
