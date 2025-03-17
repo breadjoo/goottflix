@@ -5,15 +5,14 @@ import com.goottflix.movie.model.Movie;
 import com.goottflix.review.mapper.ReviewMapper;
 import com.goottflix.review.model.Review;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ScheduledFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +20,9 @@ public class MovieService {
 
     private final MovieMapper movieMapper;
     private final ReviewMapper reviewMapper;
+
+    @Value("${file.upload-dir:/uploads}")
+    private String uploadDir;
 
     public void save(Movie movie, MultipartFile file) throws IOException {
 
@@ -55,17 +57,39 @@ public class MovieService {
         movieMapper.update(movie1);
     }
 
+//    private String handleFileUpload(MultipartFile file) throws IOException {
+//        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
+//        UUID uuid = UUID.randomUUID();
+//        String fileName = uuid + "_" + file.getOriginalFilename();
+//        File saveFile = new File(projectPath, fileName);
+//        file.transferTo(saveFile);
+//        return "/files/"+fileName;
+//    }
+
     private String handleFileUpload(MultipartFile file) throws IOException {
-        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + file.getOriginalFilename();
-        File saveFile = new File(projectPath, fileName);
+
+        File saveFile = new File(uploadDir, fileName);
+
+        // uploads 디렉토리가 없다면 생성
+        saveFile.getParentFile().mkdirs();
+
         file.transferTo(saveFile);
-        return "/files/"+fileName;
+        return "/files/" + fileName; // NGINX가 /files/**를 /uploads/**로 연결할 것이므로
     }
 
+//    public void deleteExistingFile(Movie movie) {
+//        File oriFile = new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static" + movie.getPosterUrl());
+//        if (oriFile.exists()) {
+//            oriFile.delete();
+//        }
+//    }
+
     public void deleteExistingFile(Movie movie) {
-        File oriFile = new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static" + movie.getPosterUrl());
+        String filePath = uploadDir + movie.getPosterUrl().replace("/files", "");
+        File oriFile = new File(filePath);
+
         if (oriFile.exists()) {
             oriFile.delete();
         }
