@@ -80,6 +80,8 @@ jobs:
             sudo docker container prune -f
             sudo docker image prune -f
             
+            sudo docker image rm -f ${{ secrets.DOCKER_REPO_BACKEND }}:latest || echo "backend 이미지가 없습니다."
+            
             echo "✅ 최신 Docker 이미지 가져오기"
             sudo docker pull ${{ secrets.DOCKER_REPO_BACKEND }}:latest
             sudo docker pull ${{ secrets.DOCKER_REPO_FRONTEND }}:latest
