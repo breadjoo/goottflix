@@ -1,6 +1,5 @@
 name: Deploy to Amazon EC2
 
-
 on:
   push:
     branches: [ "main" ] # push가 될 때 워크플로우를 실행할 브랜치 리스트
