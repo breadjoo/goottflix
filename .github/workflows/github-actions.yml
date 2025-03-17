@@ -18,6 +18,8 @@ jobs:
         with:
           java-version: '17' # 스프링부트 애플리케이션 자바 버전에 맞게
           distribution: 'zulu'
+      - name: Clean build directory
+        run: rm -rf build
 
       - name: Gradle Caching
         uses: actions/cache@v3
@@ -59,6 +61,7 @@ jobs:
           platforms: linux/amd64 # EC2 아키텍쳐에 맞게 (x86 = amd64, arm = arm64)
           push: true
           tags: ${{ secrets.DOCKER_REPO }}:latest
+          no-cache: true
 
       # 서버에 배포
       - name: Deploy to Server
