@@ -1,5 +1,6 @@
 package com.goottflix.user.service;
 
+import com.goottflix.common.FileService;
 import com.goottflix.user.model.UpdateDTO;
 import com.goottflix.user.model.repository.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class UserService {
 
     private final UserMapper userMapper;
+    private final FileService fileService;
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -30,10 +32,10 @@ public class UserService {
             String existImage = userMapper.findImageById(user.getId());
 
             if (!file.isEmpty()) {
-                String newImageUrl = handleFileUpload(file);
+                String newImageUrl = fileService.saveFile(file);
                 user.setProfileImage(newImageUrl);
                 if (existImage != null) {
-                    deleteExistingFile(existImage);
+                    fileService.deleteExistingFile(existImage);
                 }
             }
 
@@ -55,21 +57,21 @@ public class UserService {
         }
     }
 
-    private String handleFileUpload(MultipartFile file) throws IOException {
-        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
-        UUID uuid = UUID.randomUUID();
-        String fileName = uuid + "_" + file.getOriginalFilename();
-        File saveFile = new File(projectPath, fileName);
-        file.transferTo(saveFile);
-        return "/files/"+fileName;
-    }
-
-    private void deleteExistingFile(String imageUrl) {
-        File file = new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static" + imageUrl);
-        if (file.exists()) {
-            file.delete();
-        }
-    }
+//    private String handleFileUpload(MultipartFile file) throws IOException {
+//        String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
+//        UUID uuid = UUID.randomUUID();
+//        String fileName = uuid + "_" + file.getOriginalFilename();
+//        File saveFile = new File(projectPath, fileName);
+//        file.transferTo(saveFile);
+//        return "/files/"+fileName;
+//    }
+//
+//    private void deleteExistingFile(String imageUrl) {
+//        File file = new File(System.getProperty("user.dir") + "\\src\\main\\resources\\static" + imageUrl);
+//        if (file.exists()) {
+//            file.delete();
+//        }
+//    }
 
     public String findUsernameByuserId(Long userId){
         return userMapper.findByUserId(userId).getUsername();
