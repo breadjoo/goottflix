@@ -30,11 +30,11 @@
         WHERE f.user_id = #{userId}
     </select>
 
-    <select id="existsByFriendId" resultType="boolean" parameterType="Long">
-        SELECT COUNT(*) > 0
-        FROM friends
-        WHERE user_id = #{userId} ANd friend_id = #{friendId}
-    </select>
+<!--    <select id="existsByFriendId" resultType="boolean" parameterType="Long">-->
+<!--        SELECT COUNT(*) > 0-->
+<!--        FROM friends-->
+<!--        WHERE user_id = #{userId} ANd friend_id = #{friendId}-->
+<!--    </select>-->
 
     <select id="friendListMyPage" parameterType="Long" resultType="MyPageFriends">
         SELECT f.friend_id, f.created_at, u.username, u.profile_image,
