@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.goottflix.friend.entity.repository.FriendMapper">
-
-
     <select id="searchFriend" resultType="FriendNotifyDTO">
         SELECT id, username
         FROM user
@@ -34,7 +32,7 @@
 
     <select id="existsByFriendId" resultType="boolean" parameterType="Long">
         SELECT COUNT(*) > 0
-        FROM friends
+        FROM user
         WHERE user_id = #{userId} ANd friend_id = #{friendId}
     </select>
 
