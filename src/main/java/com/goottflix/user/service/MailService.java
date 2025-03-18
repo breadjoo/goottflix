@@ -16,7 +16,6 @@ import java.util.Random;
 public class MailService {
 
     private final JavaMailSender mailSender;
-
     public String sendVerificationCode(String email) throws MessagingException {
 
         // 6자리 인증번호 생성
