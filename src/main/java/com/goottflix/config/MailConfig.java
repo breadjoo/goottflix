@@ -18,19 +18,18 @@ public class MailConfig {
     JavaMailSender javaMailSender() {
 
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.mail.nate.com");
-        mailSender.setPort(465);
-        mailSender.setUsername("yoohwanjoo@nate.com");
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        mailSender.setUsername("yoohwanjoo@gmail.com");
         mailSender.setPassword(mailPassword);
 
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.ssl.enable", "true"); // SSL 활성화
-        props.put("mail.smtp.starttls.enable", "false"); // 465 포트에서는 STARTTLS 사용 X
-        props.put("mail.smtp.ssl.trust", "smtp.mail.nate.com"); // SSL 신뢰 설정
-        props.put("mail.debug", "true"); // 디버깅 로그 활성화 (필요 시)
+        props.put("mail.smtp.starttls.enable", "true"); // STARTTLS 활성화
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com"); // 신뢰할 호스트 설정
+        props.put("mail.debug", "true"); // 필요 시 디버깅 활성화
 
         mailSender.setJavaMailProperties(props);
         return mailSender;
