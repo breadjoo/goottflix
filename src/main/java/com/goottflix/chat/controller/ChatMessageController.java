@@ -49,8 +49,5 @@ public class ChatMessageController {
         public List<ChatMessage> getMessagesByRoomId(@PathVariable Long roomId) {
             return chatMessageService.getMessagesByRoomId(roomId);
         }
-
-
-
     }
 }
