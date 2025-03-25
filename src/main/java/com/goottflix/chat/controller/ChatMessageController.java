@@ -22,9 +22,10 @@ public class ChatMessageController {
     public void sendMessage(ChatMessage message) {
         // 메시지 타입에 따른 처리 (텍스트 또는 이미지)
         if ("IMAGE".equals(message.getType())) {
-            System.out.println("이미지 메시지 처리");
+            System.out.println(message.getSender() + " 가 채팅방에 이미지 업로드를 했습니다");
         } else {
-            System.out.println("텍스트 메시지 처리");
+            System.out.println("보낸사람 : " + message.getSender());
+            System.out.println("메시지전송 : " + message.getMessage());
         }
 
         // 메시지를 데이터베이스에 저장
