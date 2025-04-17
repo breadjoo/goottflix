@@ -4,7 +4,6 @@ package com.goottflix.notify.controller;
 import com.goottflix.notify.entity.NotifyEntity;
 import com.goottflix.notify.service.NotifyService;
 import com.goottflix.user.jwt.JWTUtil;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
